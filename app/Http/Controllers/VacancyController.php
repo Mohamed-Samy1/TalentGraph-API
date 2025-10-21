@@ -6,6 +6,7 @@ use App\Traits\ApiResponses;
 use App\Http\Requests\VacancyStoreRequest;
 use App\Http\Requests\VacancyUpdateRequest;
 use App\Http\Resources\VacancyResource;
+use App\Http\Filters\VacancyFilter;
 use App\Models\Vacancy;
 use App\Models\Company;
 use Illuminate\Http\Request;
@@ -15,13 +16,13 @@ class VacancyController extends Controller
 {
     use ApiResponses;
 
-    public function index()
+    public function index(Request $request)
     {
-        $vacancies = Vacancy::with(['company', 'employer'])->get();
+        $filters = new VacancyFilter($request);
         
-        return $this->ok('Vacancies fetched successfully', [
-            'vacancies' => VacancyResource::collection($vacancies)
-        ]);
+        return VacancyResource::collection(
+            Vacancy::filter($filters)->with(['company', 'employer'])->paginate()
+        );
     }
 
     public function store(VacancyStoreRequest $request)
