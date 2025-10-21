@@ -31,25 +31,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // relations
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
     }
 
-    // employer has one company (one-to-one)
     public function company(): HasOne
     {
         return $this->hasOne(Company::class, 'employer_id');
     }
 
-    // vacancies posted by this user (employer)
     public function postedVacancies(): HasMany
     {
         return $this->hasMany(Vacancy::class, 'employer_id');
     }
 
-    // pivot relationships: applications via users_vacancies pivot
     public function usersVacancies(): HasMany
     {
         return $this->hasMany(UsersVacancy::class, 'user_id');
@@ -57,7 +53,6 @@ class User extends Authenticatable
 
     public function applications()
     {
-        // convenience: has many through UsersVacancy -> Application
         return $this->hasManyThrough(
             Application::class,
             UsersVacancy::class,
@@ -68,7 +63,6 @@ class User extends Authenticatable
         );
     }
 
-    // helper checks
     public function isEmployer(): bool
     {
         return $this->role && $this->role->name === 'employer';

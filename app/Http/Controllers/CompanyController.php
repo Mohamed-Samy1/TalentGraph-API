@@ -37,7 +37,6 @@ class CompanyController extends Controller
             return $this->error('You are not authorized to create companies', 403);
         }
 
-        // Check if user already has a company
         if ($user->company) {
             return $this->error('You already have a company. Each employer can only create one company.', 422);
         }

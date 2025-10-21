@@ -6,10 +6,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class VacancyFilter extends QueryFilter
 {
-    // Search by keyword in title or description
     public function search($keyword)
     {
-        // Sanitize and validate input
         $keyword = $this->sanitizeInput($keyword);
         
         if (empty($keyword)) {
@@ -22,7 +20,6 @@ class VacancyFilter extends QueryFilter
         });
     }
 
-    // Filter by location
     public function location($location)
     {
         $location = $this->sanitizeInput($location);
@@ -34,7 +31,6 @@ class VacancyFilter extends QueryFilter
         return $this->query->where('location', 'LIKE', "%{$location}%");
     }
 
-    // Filter by job type
     public function job_type($jobType)
     {
         $allowedTypes = ['full_time', 'part_time', 'contract', 'remote'];
@@ -46,7 +42,6 @@ class VacancyFilter extends QueryFilter
         return $this->query->where('job_type', $jobType);
     }
 
-    // Filter by vacancy type
     public function vacancy_type($vacancyType)
     {
         $allowedTypes = ['full_time', 'part_time', 'contract', 'remote'];
@@ -58,6 +53,20 @@ class VacancyFilter extends QueryFilter
         return $this->query->where('job_type', $vacancyType);
     }
 
+    public function sort($value = null)
+    {
+        $direction = 'desc';
+
+        if (!empty($value)) {
+            $value = strtolower($value);
+            if ($value === 'oldest') {
+                $direction = 'asc';
+            }
+        }
+
+        return $this->query->orderBy('created_at', $direction);
+    }
+
     private function sanitizeInput($input)
     {
         if (empty($input)) {
@@ -67,10 +76,7 @@ class VacancyFilter extends QueryFilter
         // Remove potentially dangerous characters
         $input = trim($input);
         $input = strip_tags($input);
-        $input = htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
-        
-        // Limit length to prevent DoS attacks
-        $input = substr($input, 0, 255);
+        $input = htmlspecialchars($input);
         
         return $input;
     }

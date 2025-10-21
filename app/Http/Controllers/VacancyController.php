@@ -72,7 +72,6 @@ class VacancyController extends Controller
     {
         $user = auth()->user();
         
-        // Check if user is the employer who created this vacancy
         if ($vacancy->employer_id !== $user->id) {
             return $this->error('You can only update your own vacancies', 403);
         }
@@ -92,7 +91,6 @@ class VacancyController extends Controller
         $attributes = $request->mappedAttributes();
         $vacancy->update($attributes);
         
-        // Load relationships for the response
         $vacancy->load(['company', 'employer']);
         
         return $this->ok('Vacancy updated successfully', [
@@ -104,7 +102,6 @@ class VacancyController extends Controller
     {
         $user = auth()->user();
         
-        // Check if user is the employer who created this vacancy
         if ($vacancy->employer_id !== $user->id) {
             return $this->error('You can only delete your own vacancies', 403);
         }

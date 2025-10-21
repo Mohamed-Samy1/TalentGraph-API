@@ -25,7 +25,6 @@ class Company extends Model
         'is_verified' => 'boolean',
     ];
 
-    // company belongs to an employer (user)
     public function employer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'employer_id');

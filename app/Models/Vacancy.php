@@ -43,7 +43,6 @@ class Vacancy extends Model
         return $this->hasMany(UsersVacancy::class);
     }
 
-    // convenience: get applications through users_vacancies
     public function applications()
     {
         return $this->hasManyThrough(
@@ -56,9 +55,6 @@ class Vacancy extends Model
         );
     }
 
-    /**
-     * Scope for filtering vacancies
-     */
     public function scopeFilter($query, VacancyFilter $filters)
     {
         return $filters->apply($query);

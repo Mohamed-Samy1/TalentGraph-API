@@ -33,7 +33,6 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         $remember = $request->boolean('remember', false);
 
-        // Attempt login with credentials only
         if (!Auth::attempt($credentials)) {
             return $this->error('Invalid credentials', 401);
         }
