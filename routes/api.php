@@ -32,8 +32,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('companies', CompanyController::class)->except(['index']);
 
-    // Application routes
-    Route::post('/apply/{vacancy}', [ApplicationController::class, 'apply']);
+    // Job Seeker Routes for managing applications
+    Route::post('/applications/apply/{vacancy}', [ApplicationController::class, 'apply']);
     Route::get('/applications/my-applications', [ApplicationController::class, 'myApplications']);
-    Route::post('/applications/{application}/withdraw', [ApplicationController::class, 'withdraw']);
+    Route::post('/applications/{application}/withdraw', [ApplicationController::class, 'toggleWithdraw']);
+
+    // Employer routes for managing applications
+    Route::get('/applications/company-applications', [ApplicationController::class, 'companyApplications']);
 });

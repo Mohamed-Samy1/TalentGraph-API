@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ApplicationStoreRequest;
+use App\Http\Resources\ApplicationResource;
 use App\Models\Application;
 use App\Models\Vacancy;
 use App\Traits\ApiResponses;
@@ -14,6 +15,8 @@ use Illuminate\Support\Str;
 class ApplicationController extends Controller
 {
     use ApiResponses;
+
+    // Job Seeker methods for managing applications
 
     public function apply(ApplicationStoreRequest $request, Vacancy $vacancy)
     {
@@ -35,7 +38,7 @@ class ApplicationController extends Controller
         $attributes['vacancy_id'] = $vacancy->id;
 
         $application = Application::create($attributes);
-        $application->load(['vacancy.company', 'applicant']);
+        $application->load(['vacancy.company', 'user']);
 
         return $this->ok('Application submitted successfully', [
             'vacancy' => new ApplicationResource($application)
@@ -67,7 +70,7 @@ class ApplicationController extends Controller
         ]);
     }
 
-    public function withdraw(Application $application)
+    public function togglewithdraw(Application $application)
     {
         $user = auth()->user();
 
@@ -89,4 +92,61 @@ class ApplicationController extends Controller
 
         return $this->ok('Application withdrawn successfully', 200);
     }
+
+    // Employer methods for managing applications
+
+    public function companyApplications()
+    {
+        $user = auth()->user();
+
+        if (!$user->isEmployer()) {
+            return $this->error('Only employers can view company applications', 403);
+        }
+
+        if (!$user->company) {
+            return $this->error('You must have a company to view its applications', 403);
+        }
+
+        $applications = Application::whereHas('vacancy', function ($query) use ($user) {
+            $query->where('company_id', $user->company->id);
+        })
+        ->where('withdrawn', false)
+        ->with(['vacancy', 'user'])
+        ->orderBy('applied_at', 'desc')
+        ->get();
+
+        return response()->json([
+            'success' => true,
+            'applications' => $applications->map(function ($application) {
+                return [
+                    'id' => $application->id,
+                    'vacancy_title' => $application->vacancy->title,
+                    'vacancy_id' => $application->vacancy->id,
+                    'applicant_name' => $application->user->name,
+                    'status' => $application->status,
+                    'applied_at' => $application->applied_at,
+                ];
+            })
+        ]);
+    }
 }
+
+
+
+/* 
+    return [
+        'id' => $application->id,
+        'vacancy_title' => $application->vacancy->title,
+        'vacancy_id' => $application->vacancy->id,
+        'applicant_name' => $application->applicant->name,
+        'applicant_email' => $application->applicant->email,
+        'applicant_phone' => $application->applicant->phone,
+        'status' => $application->status,
+        'applied_at' => $application->applied_at,
+        'resume_name' => $application->resume_name,
+        'resume_path' => $application->resume_path,
+        'resume_size' => $application->resume_size,
+        'cover_letter' => $application->cover_letter,
+    ];
+
+*/

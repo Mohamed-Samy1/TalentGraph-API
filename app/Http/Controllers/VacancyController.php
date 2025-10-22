@@ -51,12 +51,11 @@ class VacancyController extends Controller
         $attributes['company_id'] = $user->company->id;
         
         $vacancy = Vacancy::create($attributes);
-        
         $vacancy->load(['company', 'employer']);
         
-        return $this->created('Vacancy created successfully', [
+        return $this->ok('Vacancy created successfully', [
             'vacancy' => new VacancyResource($vacancy)
-        ]);
+        ], 201);
     }
 
     public function show(Vacancy $vacancy)
@@ -108,6 +107,6 @@ class VacancyController extends Controller
 
         $vacancy->delete();
         
-        return $this->ok('Vacancy deleted successfully');
+        return $this->ok('Vacancy deleted successfully', 200);
     }
 }
