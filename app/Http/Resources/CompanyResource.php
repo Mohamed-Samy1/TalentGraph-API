@@ -22,6 +22,10 @@ class CompanyResource extends JsonResource
                 'name' => $this->employer->name,
                 'email' => $this->employer->email,
             ],
+            'vacancies' => [
+                'count' => $this->vacancies->count(),
+                'data' => VacancyResource::collection($this->whenLoaded('vacancies')),
+            ],
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

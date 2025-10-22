@@ -18,7 +18,6 @@ abstract class QueryFilter
     {
         $this->query = $query;
 
-        // Apply all filters dynamically
         foreach ($this->filters() as $name => $value) {
             if (method_exists($this, $name)) {
                 if (!is_null($value) && $value !== '') {
@@ -29,7 +28,7 @@ abstract class QueryFilter
 
         // Always apply default sorting if sort() method exists
         if (method_exists($this, 'sort')) {
-            $sortValue = $this->request->get('sort'); // may be null
+            $sortValue = $this->request->get('sort');
             $this->sort($sortValue);
         }
 

@@ -61,6 +61,8 @@ class CompanyController extends Controller
             return $this->error('You are not authorized to view this company', 403);
         }
 
+        $company->load('employer', 'vacancies');
+
         return $this->ok('Company fetched successfully', [
             'company' => new CompanyResource($company)
         ]);

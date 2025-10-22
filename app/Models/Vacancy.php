@@ -43,18 +43,6 @@ class Vacancy extends Model
         return $this->hasMany(UsersVacancy::class);
     }
 
-    public function applications()
-    {
-        return $this->hasManyThrough(
-            Application::class,
-            UsersVacancy::class,
-            'vacancy_id',        // FK on users_vacancies
-            'users_vacancy_id',  // FK on applications
-            'id',                // local key on vacancies
-            'id'                 // local key on users_vacancies
-        );
-    }
-
     public function scopeFilter($query, VacancyFilter $filters)
     {
         return $filters->apply($query);
