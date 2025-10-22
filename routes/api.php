@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\VacancyController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ApplicationController;
 
 // PUBLIC ROUTES
 Route::post('/register', [AuthController::class, 'register']);
@@ -30,4 +31,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('vacancies', VacancyController::class)->except(['index', 'show']);
 
     Route::apiResource('companies', CompanyController::class)->except(['index']);
+
+    // Application routes
+    Route::post('/apply/{vacancy}', [ApplicationController::class, 'apply']);
+    Route::get('/applications/my-applications', [ApplicationController::class, 'myApplications']);
+    Route::post('/applications/{application}/withdraw', [ApplicationController::class, 'withdraw']);
 });

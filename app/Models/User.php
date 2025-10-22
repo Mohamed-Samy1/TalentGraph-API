@@ -31,49 +31,37 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function role(): BelongsTo
+    public function role()
     {
         return $this->belongsTo(Role::class);
     }
 
-    public function company(): HasOne
+    public function company()
     {
         return $this->hasOne(Company::class, 'employer_id');
     }
 
-    public function postedVacancies(): HasMany
+    public function postedVacancies()
     {
         return $this->hasMany(Vacancy::class, 'employer_id');
     }
 
-    public function usersVacancies(): HasMany
-    {
-        return $this->hasMany(UsersVacancy::class, 'user_id');
-    }
-
     public function applications()
     {
-        return $this->hasManyThrough(
-            Application::class,
-            UsersVacancy::class,
-            'user_id',           // FK on UsersVacancy table...
-            'users_vacancy_id',  // FK on Applications table...
-            'id',                // Local key on Users (users.id)
-            'id'                 // Local key on UsersVacancy (users_vacancies.id)
-        );
+        return $this->hasMany(Application::class);
     }
 
-    public function isEmployer(): bool
+    public function isEmployer()
     {
         return $this->role && $this->role->name === 'employer';
     }
 
-    public function isJobSeeker(): bool
+    public function isJobSeeker()
     {
         return $this->role && $this->role->name === 'job_seeker';
     }
 
-    public function isAdmin(): bool
+    public function isAdmin()
     {
         return $this->role && $this->role->name === 'admin';
     }

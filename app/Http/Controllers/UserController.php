@@ -30,13 +30,7 @@ class UserController extends Controller
 
             $users = User::with('role')->orderBy('id', 'desc')->paginate(20);
             return $this->ok('Users fetched', [
-                'data' => UserResource::collection($users),
-                'meta' => [
-                    'current_page' => $users->currentPage(),
-                    'last_page' => $users->lastPage(),
-                    'per_page' => $users->perPage(),
-                    'total' => $users->total(),
-                ],
+                'data' => UserResource::collection($users)
             ]);
         } catch (AuthorizationException $ex) {
             return $this->error('You are not authorized to view users', 403);

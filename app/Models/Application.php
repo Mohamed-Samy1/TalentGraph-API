@@ -11,7 +11,8 @@ class Application extends Model
     use HasFactory;
 
     protected $fillable = [
-        'users_vacancy_id',
+        'user_id',
+        'vacancy_id',
         'resume_path',
         'resume_size',
         'resume_name',
@@ -26,34 +27,13 @@ class Application extends Model
         'applied_at' => 'datetime',
     ];
 
-    public function usersVacancy(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(UsersVacancy::class, 'users_vacancy_id');
+        return $this->belongsTo(User::class);
     }
 
-    // convenience: applicant via usersVacancy
-    public function applicant()
+    public function vacancy(): BelongsTo
     {
-        return $this->hasOneThrough(
-            User::class,
-            UsersVacancy::class,
-            'id',          // Foreign key on UsersVacancy table...
-            'id',          // Foreign key on Users table...
-            'users_vacancy_id', // Local key on Applications (this model) -> users_vacancies.id
-            'user_id'      // Local key on UsersVacancy -> users.id
-        );
-    }
-
-    // convenience: vacancy via usersVacancy
-    public function vacancy()
-    {
-        return $this->hasOneThrough(
-            Vacancy::class,
-            UsersVacancy::class,
-            'id',          // FK on UsersVacancy
-            'id',          // FK on Vacancies
-            'users_vacancy_id', // local key on applications
-            'vacancy_id'
-        );
+        return $this->belongsTo(Vacancy::class);
     }
 }

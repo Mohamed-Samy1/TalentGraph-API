@@ -38,9 +38,9 @@ class Vacancy extends Model
         return $this->belongsTo(User::class, 'employer_id');
     }
 
-    public function usersVacancies(): HasMany
+    public function applications(): HasMany
     {
-        return $this->hasMany(UsersVacancy::class);
+        return $this->hasMany(Application::class);
     }
 
     public function scopeFilter($query, VacancyFilter $filters)

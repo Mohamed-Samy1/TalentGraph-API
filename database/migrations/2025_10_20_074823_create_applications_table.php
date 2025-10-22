@@ -11,8 +11,11 @@ return new class extends Migration
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
 
-            // normalized: application belongs to a users_vacancies pivot row
-            $table->foreignId('users_vacancy_id')->constrained('users_vacancies')->onDelete('cascade');
+            // application belongs to a user
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            
+            // application belongs to a vacancy
+            $table->foreignId('vacancy_id')->constrained('vacancies')->onDelete('cascade');
 
             // resume and cover
             $table->string('resume_path');
@@ -25,6 +28,9 @@ return new class extends Migration
 
             $table->timestamp('applied_at')->useCurrent();
             $table->timestamps();
+
+            // prevent duplicate applications: a user can only apply once per vacancy
+            $table->unique(['user_id', 'vacancy_id'], 'user_vacancy_unique');
         });
     }
 
