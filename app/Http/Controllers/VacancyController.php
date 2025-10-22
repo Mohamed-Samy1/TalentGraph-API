@@ -11,10 +11,13 @@ use App\Models\Vacancy;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class VacancyController extends Controller
 {
     use ApiResponses;
+    use SoftDeletes;
+
 
     public function index(Request $request)
     {
@@ -107,6 +110,6 @@ class VacancyController extends Controller
 
         $vacancy->delete();
         
-        return $this->ok('Vacancy deleted successfully', 200);
+        return $this->ok('Vacancy soft deleted successfully', 200);
     }
 }

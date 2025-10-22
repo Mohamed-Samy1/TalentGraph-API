@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedInteger('salary_min')->nullable();
             $table->unsignedInteger('salary_max')->nullable();
             $table->boolean('is_filled')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
 
