@@ -9,7 +9,7 @@ It's suitable for employers and job seekers.
 
 ## Installation
 
-1- You need to set YOUR environment , and update your database credentials
+1- You need to set YOUR environment variables , and update your database credentials
 
 2- In the terminal use the following commands in order:
 
