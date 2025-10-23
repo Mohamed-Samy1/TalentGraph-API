@@ -6,12 +6,11 @@ use App\Traits\ApiResponses;
 
 use App\Http\Resources\UserResource;
 
-use App\Http\Controllers\Controller;
-
 use App\Http\Requests\ApiLoginRequest;
 use App\Http\Requests\ApiRegisterRequest;
 use App\Http\Requests\PasswordResetRequest;
 use Illuminate\Http\Request;
+
 use Illuminate\Http\JsonResponse;
 
 use Illuminate\Support\Facades\Auth;
@@ -30,44 +29,57 @@ class AuthController extends Controller
 
     public function login(ApiLoginRequest $request)
     {
-        $credentials = $request->only('email', 'password');
-        $remember = $request->boolean('remember', false);
+        try {
 
-        if (!Auth::attempt($credentials)) {
-            return $this->error('Invalid credentials', 401);
+            $credentials = $request->only('email', 'password');
+            $remember = $request->boolean('remember', false);
+
+            if (!Auth::attempt($credentials)) {
+                return $this->error('Invalid credentials', 401);
+            }
+
+            $user = User::firstWhere('email', $request->email);
+
+            // Define token lifetime based on remember flag
+            $expiry = $remember ? now()->addMonths(6) : now()->addWeek();
+
+            $token = $user->createToken(
+                'API token for ' . $user->email,
+                Abilities::getAbilities($user),
+                $expiry
+            )->plainTextToken;
+
+            return $this->ok('Authenticated', [
+                'token' => $token,
+                'token_type' => 'Bearer',
+                'expires_at' => $expiry->toDateTimeString(),
+                'remember' => $remember,
+            ]);
+
+        } catch (\Throwable $e) {
+            return $this->error('Login failed', 500);
         }
-
-        $user = User::firstWhere('email', $request->email);
-
-        // Define token lifetime based on remember flag
-        $expiry = $remember ? now()->addMonths(6) : now()->addWeek();
-
-        $token = $user->createToken(
-            'API token for ' . $user->email,
-            Abilities::getAbilities($user),
-            $expiry
-        )->plainTextToken;
-
-        return $this->ok('Authenticated', [
-            'token' => $token,
-            'token_type' => 'Bearer',
-            'expires_at' => $expiry->toDateTimeString(),
-            'remember' => $remember,
-        ]);
     }
 
     public function logout(Request $request) {
-        $token = $request->user()->currentAccessToken();
+        
+        try {
+            
+            $token = $request->user()->currentAccessToken();
 
-        if ($token) {
-            $token->delete();
-            return $this->ok('Logged out successfully');
+            if ($token) {
+                $token->delete();
+                return $this->ok('Logged out successfully');
+            }
+
+            return $this->error('No active token found', 400);
+
+        } catch (\Throwable $e) {
+            return $this->error('Logout failed', 500);
         }
-
-        return $this->error('No active token found', 400);
     }
 
-    public function register(ApiRegisterRequest $request): JsonResponse
+    public function register(ApiRegisterRequest $request)
     {
         try {
             $attributes = $request->mappedAttributes();
@@ -102,40 +114,53 @@ class AuthController extends Controller
                     'role' => $role->name,
                 ]
             ]);
-        } catch (\Exception $ex) {
-            return $this->error('Registration failed: ' . $ex->getMessage(), 500);
+
+        } catch (\Exception $e) {
+            return $this->error('Registration failed: ' . $e->getMessage(), 500);
         }
     }
 
-    public function forgot(Request $request): JsonResponse
+    public function forgot(Request $request)
     {
-        $request->validate([
-        'email' => 'required|email|exists:users,email',
-        ]);
+        try {
 
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
+            $request->validate([
+                'email' => 'required|email|exists:users,email',
+            ]);
 
-        return $status === Password::RESET_LINK_SENT
-            ? $this->ok('Reset link sent successfully.')
-            : $this->error(__($status), 500);
+            $status = Password::sendResetLink(
+                $request->only('email')
+            );
+
+            return $status === Password::RESET_LINK_SENT
+                ? $this->ok('Reset link sent successfully.')
+                : $this->error(__($status), 500);
+
+        } catch (\Throwable $e) {
+            return $this->error('Server error', 500);
+        }
     }
 
-    public function reset(PasswordResetRequest $request): JsonResponse
+    public function reset(PasswordResetRequest $request)
     {
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function (User $user, string $password) {
-                $user->forceFill([
-                    'password' => Hash::make($password)
-                ])->save();
-            }
-        );
+        try {
 
-        return $status === Password::PASSWORD_RESET
-            ? $this->ok('Password has been reset successfully.')
-            : $this->error(__($status), 400);
+            $status = Password::reset(
+                $request->only('email', 'password', 'password_confirmation', 'token'),
+                function (User $user, string $password) {
+                    $user->forceFill([
+                        'password' => Hash::make($password)
+                    ])->save();
+                }
+            );
+
+            return $status === Password::PASSWORD_RESET
+                ? $this->ok('Password has been reset successfully.')
+                : $this->error(__($status), 400);
+
+        } catch (\Throwable $e) {
+            return $this->error('Reset password failed', 500);
+        }
     }
 }
 

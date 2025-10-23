@@ -20,6 +20,7 @@ class UserController extends Controller
     public function index()
     {
         try {
+
             $user = auth()->user();
             $policy = app(UserPolicy::class);
             $canViewAny = $policy->viewAny($user);
@@ -32,7 +33,8 @@ class UserController extends Controller
             return $this->ok('Users fetched', [
                 'data' => UserResource::collection($users)
             ]);
-        } catch (AuthorizationException $ex) {
+
+        } catch (\Throwable $e) {
             return $this->error('You are not authorized to view users', 403);
         }
     }
@@ -40,6 +42,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         try {
+            
             $currentUser = auth()->user();
             $policy = app(UserPolicy::class);
             $canView = $policy->view($currentUser, $user);
@@ -50,7 +53,8 @@ class UserController extends Controller
 
             $user->load('role');
             return $this->ok('User fetched', new UserResource($user));
-        } catch (AuthorizationException $ex) {
+        
+        } catch (\Throwable $e) {
             return $this->error('You are not authorized to view this user', 403);
         }
     }
@@ -87,7 +91,8 @@ class UserController extends Controller
             ]);
 
             return $this->created('User created', new UserResource($user->load('role')));
-        } catch (AuthorizationException $ex) {
+        
+        } catch (\Throwable $e) {
             return $this->error('You are not authorized to create users', 403);
         }
     }
@@ -134,7 +139,7 @@ class UserController extends Controller
             $user->save();
 
             return $this->ok('User updated', new UserResource($user->load('role')));
-        } catch (AuthorizationException $ex) {
+        } catch (\Throwable $e) {
             return $this->error('You are not authorized to update this user', 403);
         }
     }
@@ -152,7 +157,8 @@ class UserController extends Controller
 
             $user->delete();
             return $this->ok('User deleted');
-        } catch (AuthorizationException $ex) {
+
+        } catch (\Throwable $e) {
             return $this->error('You are not authorized to delete this user', 403);
         }
     }

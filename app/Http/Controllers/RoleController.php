@@ -17,6 +17,7 @@ class RoleController extends Controller
     public function index()
     {
         try {
+
             $user = auth()->user();
             $policy = app(RolePolicy::class);
             $canViewAny = $policy->viewAny($user);
@@ -27,6 +28,7 @@ class RoleController extends Controller
 
             $roles = Role::orderBy('id')->get();
             return $this->ok('Roles fetched', RoleResource::collection($roles));
+
         } catch (AuthorizationException $ex) {
             return $this->error('You are not authorized to view roles', 403);
         }
@@ -35,6 +37,7 @@ class RoleController extends Controller
     public function store(RoleStoreRequest $request)
     {
         try {
+
             $user = auth()->user();
             $policy = app(RolePolicy::class);
             $canCreate = $policy->store($user);
@@ -47,6 +50,7 @@ class RoleController extends Controller
             $role = Role::create($attributes);
             
             return $this->created('Role created', new RoleResource($role));
+
         } catch (AuthorizationException $ex) {
             return $this->error('You are not authorized to create roles', 403);
         }
@@ -55,6 +59,7 @@ class RoleController extends Controller
     public function show(Role $role)
     {
         try {
+
             $user = auth()->user();
             $policy = app(RolePolicy::class);
             $canView = $policy->view($user, $role);
@@ -64,6 +69,7 @@ class RoleController extends Controller
             }
 
             return $this->ok('Role fetched', new RoleResource($role));
+
         } catch (AuthorizationException $ex) {
             return $this->error('You are not authorized to view this role', 403);
         }
@@ -72,6 +78,7 @@ class RoleController extends Controller
     public function update(RoleUpdateRequest $request, Role $role)
     {
         try {
+
             $user = auth()->user();
             $policy = app(RolePolicy::class);
             $canUpdate = $policy->update($user, $role);
@@ -84,6 +91,7 @@ class RoleController extends Controller
             $role->update($attributes);
             
             return $this->ok('Role updated', new RoleResource($role));
+
         } catch (AuthorizationException $ex) {
             return $this->error('You are not authorized to update this role', 403);
         }
@@ -102,6 +110,7 @@ class RoleController extends Controller
 
             $role->delete();
             return $this->ok('Role deleted');
+            
         } catch (AuthorizationException $ex) {
             return $this->error('You are not authorized to delete this role', 403);
         }

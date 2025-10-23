@@ -24,14 +24,6 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        User::create([
-            'role_id' => $adminRole->id,
-            'name' => 'Admin User',
-            'email' => 'admin2@example.com',
-            'phone' => '01100000000',
-            'password' => Hash::make('password'),
-        ]);
-
         User::factory()->count(25)->create([
             'role_id' => $jobSeekerRole->id,
         ]);
