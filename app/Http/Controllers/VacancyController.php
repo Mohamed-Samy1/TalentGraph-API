@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Traits\ApiResponses;
+
 use App\Http\Requests\VacancyStoreRequest;
 use App\Http\Requests\VacancyUpdateRequest;
+
 use App\Http\Resources\VacancyResource;
+
 use App\Http\Filters\VacancyFilter;
+
 use App\Models\Vacancy;
 use App\Models\Company;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -17,7 +22,6 @@ class VacancyController extends Controller
 {
     use ApiResponses;
     use SoftDeletes;
-
 
     public function index(Request $request)
     {
@@ -55,6 +59,11 @@ class VacancyController extends Controller
         
         $vacancy = Vacancy::create($attributes);
         $vacancy->load(['company', 'employer']);
+
+        activity()
+        ->causedBy(auth()->user())
+        ->performedOn($vacancy)
+        ->log('Vacancy created by employer');
         
         return $this->ok('Vacancy created successfully', [
             'vacancy' => new VacancyResource($vacancy)
@@ -109,6 +118,11 @@ class VacancyController extends Controller
         }
 
         $vacancy->delete();
+
+        activity()
+        ->causedBy(auth()->user())
+        ->performedOn($vacancy)
+        ->log('Vacancy deleted by employer');
         
         return $this->ok('Vacancy soft deleted successfully', 200);
     }

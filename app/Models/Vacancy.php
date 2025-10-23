@@ -8,9 +8,27 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Http\Filters\VacancyFilter;
 
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+
 class Vacancy extends Model
 {
     use HasFactory;
+
+    use LogsActivity;
+
+    protected static $logName = 'vacancy';
+    protected static $logAttributes = ['title', 'description', 'company_id'];
+    protected static $logOnlyDirty = true;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('vacancy')
+            ->logOnly(['title', 'description', 'company_id', 'is_filled', 'status'])
+            ->logOnlyDirty()
+            ->setDescriptionForEvent(fn(string $eventName) => "Vacancy was {$eventName}");
+    }
 
     protected $fillable = [
         'company_id',
@@ -22,6 +40,7 @@ class Vacancy extends Model
         'salary_min',
         'salary_max',
         'is_filled',
+        'status',
     ];
 
     protected $casts = [

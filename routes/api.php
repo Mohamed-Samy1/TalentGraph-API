@@ -47,4 +47,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Admin Routes
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+    Route::get('/admin/logs', [AdminController::class, 'viewActivityLogs']);
+    Route::delete('/admin/deleteVacancy/{vacancy}', [AdminController::class, 'deleteVacancy']);
 });
