@@ -8,6 +8,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\VacancyController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ApplicationController;
+use App\Models\Application;
 
 // PUBLIC ROUTES
 Route::post('/register', [AuthController::class, 'register']);
@@ -39,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Employer routes for managing applications
     Route::get('/applications/company-applications', [ApplicationController::class, 'companyApplications']);
+    Route::get('/applications/{application}', [ApplicationController::class, 'showApplication']);
     Route::get('/applications/download', [ApplicationController::class, 'downloadApplications']);
-    Route::get('/applications/download-direct', [ApplicationController::class, 'downloadApplicationsDirect']);
+    Route::patch('/applications/{application}/status', [ApplicationController::class, 'updateApplicationStatus']);
 });

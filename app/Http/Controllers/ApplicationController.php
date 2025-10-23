@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ApplicationStoreRequest;
+use App\Http\Requests\ApplicationUpdateRequest;
 use App\Http\Resources\ApplicationResource;
 use App\Models\Application;
 use App\Models\Vacancy;
@@ -18,7 +19,9 @@ class ApplicationController extends Controller
 {
     use ApiResponses;
 
-    // Job Seeker methods for managing applications
+    // --------------------------------
+    // JOB SEEKER APPLICATION MANAGEMENT
+    // --------------------------------
 
     public function apply(ApplicationStoreRequest $request, Vacancy $vacancy)
     {
@@ -95,7 +98,9 @@ class ApplicationController extends Controller
         return $this->ok('Application withdrawn successfully', 200);
     }
 
-    // Employer methods for managing applications
+    // --------------------------------
+    // EMPLOYER APPLICATIONS MANAGEMENT
+    // --------------------------------
 
     public function companyApplications()
     {
@@ -132,6 +137,32 @@ class ApplicationController extends Controller
         ]);
     }
 
+    public function showApplication(Application $application) {
+        
+        $user = auth()->user();
+
+        if(!$user->isEmployer() || !$user->company()) {
+                return $this->error('You must be an employer who has a company to get application info', 401);
+            }
+
+        if (!$application->vacancy || $application->vacancy->company_id !== $user->company->id) {
+            return $this->error('You are not authorized to get this application.', 403);
+        }
+
+        $application->load(['user:id,name,email,phone']);
+
+        $data = [
+            'applicant' => [
+                'name' => $application->user->name,
+                'email' => $application->user->email,
+                'phone' => $application->user->phone,
+            ],
+            'applied_at' => $application->applied_at,
+        ];
+
+        return $this->ok('Application details fetched successfully.', $data, 200);
+    }
+
     public function downloadApplications()
     {
         $user = auth()->user();
@@ -147,9 +178,9 @@ class ApplicationController extends Controller
         $applications = Application::whereHas('vacancy', function ($query) use ($user) {
             $query->where('company_id', $user->company->id);
         })
-            ->where('withdrawn', false)
-            ->with(['user', 'vacancy'])
-            ->get();
+        ->where('withdrawn', false)
+        ->with(['user', 'vacancy'])
+        ->get();
 
         if ($applications->isEmpty()) {
             return $this->error('No applications found for your company.', 404);
@@ -161,7 +192,7 @@ class ApplicationController extends Controller
             return $this->error('No resumes folder found.', 404);
         }
 
-        $zipFileName = 'company_' . $user->company->id . '_resumes_' . time() . '.zip';
+        $zipFileName = $user->company->name . '_resumes.zip';
         $zipFilePath = public_path($zipFileName);
 
         $zip = new ZipArchive;
@@ -185,7 +216,6 @@ class ApplicationController extends Controller
             $fileName = $resumeFile->getFilename();
             $filePath = $resumeFile->getPathname();
             
-            // Only add PDF files (you can modify this to include other file types)
             if (strtolower(pathinfo($fileName, PATHINFO_EXTENSION)) === 'pdf') {
                 $zip->addFile($filePath, $fileName);
                 $added = true;
@@ -199,30 +229,45 @@ class ApplicationController extends Controller
             return $this->error('No resumes found to include.', 404);
         }
 
-        // Return a single download link
         return $this->ok('All resumes zipped successfully.', [
             'download_url' => url($zipFileName),
             'filename' => $zipFileName,
         ]);
     }
+
+    public function updateApplicationStatus(ApplicationUpdateRequest $request, Application $application)
+    {
+        try 
+        {
+            $user = auth()->user();
+
+            if(!$user->isEmployer() || !$user->company()) {
+                return $this->error('You must be an employer who has a company to update an application status', 401);
+            }
+
+            if (!$application->vacancy || $application->vacancy->company_id !== $user->company->id) {
+                return $this->error('You are not authorized to modify this application.', 403);
+            }
+
+            $attributes = $request->mappedAttributes();
+
+            $application->update([
+                'status' => $attributes['status']
+            ]);
+
+            return $this->ok('Application status updated successfully.', [
+                'application_id' => $application->id,
+                'applicant_name' => $application->user->name,
+                'new_status' => $application->status,
+            ], 200);
+
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Something went wrong while updating the application status.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+
+    }
+
 }
-
-
-
-/* 
-    return [
-        'id' => $application->id,
-        'vacancy_title' => $application->vacancy->title,
-        'vacancy_id' => $application->vacancy->id,
-        'applicant_name' => $application->applicant->name,
-        'applicant_email' => $application->applicant->email,
-        'applicant_phone' => $application->applicant->phone,
-        'status' => $application->status,
-        'applied_at' => $application->applied_at,
-        'resume_name' => $application->resume_name,
-        'resume_path' => $application->resume_path,
-        'resume_size' => $application->resume_size,
-        'cover_letter' => $application->cover_letter,
-    ];
-
-*/
