@@ -8,6 +8,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\VacancyController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\AdminController;
 use App\Models\Application;
 
 // PUBLIC ROUTES
@@ -43,4 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/applications/{application}', [ApplicationController::class, 'showApplication']);
     Route::get('/applications/download', [ApplicationController::class, 'downloadApplications']);
     Route::patch('/applications/{application}/status', [ApplicationController::class, 'updateApplicationStatus']);
+
+    // Admin Routes
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
 });

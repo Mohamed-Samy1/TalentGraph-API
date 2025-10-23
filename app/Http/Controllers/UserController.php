@@ -25,10 +25,10 @@ class UserController extends Controller
             $canViewAny = $policy->viewAny($user);
 
             if (!$canViewAny) {
-                return $this->error('You are not authorized to view users', 403);
+                return $this->error('Only the admin can view users', 403);
             }
 
-            $users = User::with('role')->orderBy('id', 'desc')->paginate(20);
+            $users = User::with('role')->orderBy('id')->paginate(20);
             return $this->ok('Users fetched', [
                 'data' => UserResource::collection($users)
             ]);
