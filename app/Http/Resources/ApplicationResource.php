@@ -10,11 +10,11 @@ class ApplicationResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $application->id,
-            'vacancy_title' => $vacancy->title,
-            'company_name' => $vacancy->company->name,
-            'applied_at' => $application->applied_at,
-            'status' => $application->status,
+            'id' => $this->id,
+            'vacancy_title' => $this->vacancy->title ?? null,
+            'company_name' => $this->vacancy->company->name ?? null,
+            'applied_at' => $this->applied_at,
+            'status' => $this->status,
         ];
     }
 }

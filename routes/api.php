@@ -39,4 +39,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Employer routes for managing applications
     Route::get('/applications/company-applications', [ApplicationController::class, 'companyApplications']);
+    Route::get('/applications/download', [ApplicationController::class, 'downloadApplications']);
+    Route::get('/applications/download-direct', [ApplicationController::class, 'downloadApplicationsDirect']);
 });
