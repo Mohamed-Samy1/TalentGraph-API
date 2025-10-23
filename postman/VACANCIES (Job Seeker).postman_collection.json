@@ -1,0 +1,28 @@
+{
+	"info": {
+		"_postman_id": "1b22b679-9d49-4b00-821b-f6daf0a0ba76",
+		"name": "VACANCIES (Job Seeker)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20110358"
+	},
+	"item": [
+		{
+			"name": "GET Vacancies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://127.0.0.1:8000/api/vacancies"
+			},
+			"response": []
+		},
+		{
+			"name": "GET A Specific Vacancy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://127.0.0.1:8000/api/vacancies/4"
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,115 @@
+{
+	"info": {
+		"_postman_id": "26f1c2d8-da39-4521-b7ac-d47262e5e5bc",
+		"name": "COMPANIES",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20110358"
+	},
+	"item": [
+		{
+			"name": "GET All Companies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://127.0.0.1:8000/api/companies"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Company",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "2|xfOT1hRj7X04CRwkT3T7mBFmkXzHZhdMBkkomwtnaa59fa63"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Tesla\",\r\n  \"description\": \"Leading Cars company\",\r\n  \"website\": \"https://www.tesla.com/\",\r\n  \"logo_path\": \"/public/tesla.png\",\r\n  \"logo_size\": 1024000,\r\n  \"is_verified\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8000/api/companies"
+			},
+			"response": []
+		},
+		{
+			"name": "GET Company",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "19|Kq5LGFXJdycoO7iXtmGy8kAyGYTtVpDFzAnRRRKBa83006fb"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://127.0.0.1:8000/api/companies/4"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Company",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "16|DehgdsRK2ccHdVmtD3orxp164htqDDxcwnTtcbRx0825debd"
+					}
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Amazon E-Commerce\",\r\n  \"description\": \"Updated description\",\r\n  \"is_verified\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8000/api/companies/3"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Company",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "16|DehgdsRK2ccHdVmtD3orxp164htqDDxcwnTtcbRx0825debd"
+					}
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": "http://127.0.0.1:8000/api/companies/3"
+			},
+			"response": []
+		}
+	]
+}

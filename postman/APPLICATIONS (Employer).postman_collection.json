@@ -1,0 +1,91 @@
+{
+	"info": {
+		"_postman_id": "3c398b2e-8f65-4c9a-94ea-d02f19ea6971",
+		"name": "APPLICATIONS (Employer)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20110358"
+	},
+	"item": [
+		{
+			"name": "GET All Related Applications",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "4|XsCprcsIX2NI7DKAH8jm91ww7UpBi0H9IFzApLhO90bf43ac"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://127.0.0.1:8000/api/applications/company-applications"
+			},
+			"response": []
+		},
+		{
+			"name": "GET an Application",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "4|XsCprcsIX2NI7DKAH8jm91ww7UpBi0H9IFzApLhO90bf43ac"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://127.0.0.1:8000/api/applications/6"
+			},
+			"response": []
+		},
+		{
+			"name": "Change Application Status",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "4|XsCprcsIX2NI7DKAH8jm91ww7UpBi0H9IFzApLhO90bf43ac"
+					}
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": \"accepted\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8000/api/applications/6/status"
+			},
+			"response": []
+		},
+		{
+			"name": "Download Resumes",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "4|XsCprcsIX2NI7DKAH8jm91ww7UpBi0H9IFzApLhO90bf43ac"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/zip",
+						"type": "text"
+					}
+				],
+				"url": "http://127.0.0.1:8000/api/applications/download"
+			},
+			"response": []
+		}
+	]
+}

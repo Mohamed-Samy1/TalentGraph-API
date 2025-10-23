@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "dc4f2682-e3e7-4745-8f7f-7e8befe7cace",
+		"name": "ROLES",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20110358"
+	},
+	"item": [
+		{
+			"name": "GET Roles",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "8|MfnKgEJoHfNqSE1h6twnAaqPORx3tN1gAsPBqrpPc087eabf"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Abdallah Yasser\",\r\n    \"email\": \"abdallah.yasser@example.com\",\r\n    \"password\": \"password123\",\r\n    \"phone\": \"+123414567890\",\r\n    \"role\": \"job_seeker\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8000/api/roles"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Role",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "8|MfnKgEJoHfNqSE1h6twnAaqPORx3tN1gAsPBqrpPc087eabf"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8000/api/roles"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Role",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "8|MfnKgEJoHfNqSE1h6twnAaqPORx3tN1gAsPBqrpPc087eabf"
+					}
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"guest\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8000/api/roles/1"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Role",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "9|AlhzfWcmwThb1sGZS3NeW8knV24YwV7MuXjKIyII0961dbe0"
+					}
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": "http://127.0.0.1:8000/api/roles/5"
+			},
+			"response": []
+		}
+	]
+}

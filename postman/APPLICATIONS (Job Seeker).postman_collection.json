@@ -1,0 +1,70 @@
+{
+	"info": {
+		"_postman_id": "8b5d5716-2bf9-414b-8997-e714ceb0534f",
+		"name": "APPLICATIONS (Job Seeker)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20110358"
+	},
+	"item": [
+		{
+			"name": "GET My Applications",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "3|IgyZW6v1YuLMcl5gxeYcNKbCKTWr4NNdADtfUWBT1369684a"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://127.0.0.1:8000/api/applications/my-applications"
+			},
+			"response": []
+		},
+		{
+			"name": "Withdraw Application",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "3|IgyZW6v1YuLMcl5gxeYcNKbCKTWr4NNdADtfUWBT1369684a"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"url": "http://127.0.0.1:8000/api/applications/2/withdraw"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Application",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "8|Y3ck5laRzrPM2SUFoyyhxKDtpV5qaI3Oi8OxwRF2eccc7c1a"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"resume\": \"public/resumes/resume2.pdf\",\r\n  \"cover_letter\": \"Ama nshof\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8000/api/applications/apply/2"
+			},
+			"response": []
+		}
+	]
+}

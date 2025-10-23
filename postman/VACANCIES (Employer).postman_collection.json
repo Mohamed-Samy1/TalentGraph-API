@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "259eb20f-0e85-4566-95f7-7d8a5737c424",
+		"name": "VACANCIES (Employer)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20110358"
+	},
+	"item": [
+		{
+			"name": "POST Vacancy",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "2|xfOT1hRj7X04CRwkT3T7mBFmkXzHZhdMBkkomwtnaa59fa63"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Fighter Pilot\",\r\n  \"description\": \"Looking for an experienced figher\",\r\n  \"location\": \"Cairo\",\r\n  \"job_type\": \"full_time\",\r\n  \"salary_min\": \"25000\",\r\n  \"salary_max\": \"30000\",\r\n  \"is_filled\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8000/api/vacancies"
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH Vacancy",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "17|fMpFpW34GCVUXb2UP1hnkw4PDK6dl7GKL6cSkBFI9b5791cb"
+					}
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Updated Job Title\",\r\n  \"description\": \"Updated job description\",\r\n  \"is_filled\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8000/api/vacancies/2"
+			},
+			"response": []
+		},
+		{
+			"name": "Mark Vacancy as Filled",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "2|xfOT1hRj7X04CRwkT3T7mBFmkXzHZhdMBkkomwtnaa59fa63"
+					}
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"is_filled\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8000/api/vacancies/2"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Vacancy",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "17|fMpFpW34GCVUXb2UP1hnkw4PDK6dl7GKL6cSkBFI9b5791cb"
+					}
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": "http://127.0.0.1:8000/api/vacancies/5"
+			},
+			"response": []
+		}
+	]
+}

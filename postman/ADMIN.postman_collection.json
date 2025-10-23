@@ -1,0 +1,76 @@
+{
+	"info": {
+		"_postman_id": "11106350-714e-4d19-ae18-740b15fd10ae",
+		"name": "ADMIN",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20110358"
+	},
+	"item": [
+		{
+			"name": "GET All System Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://127.0.0.1:8000/api/users"
+			},
+			"response": []
+		},
+		{
+			"name": "Admin Dashboard",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://127.0.0.1:8000/api/admin/dashboard"
+			},
+			"response": []
+		},
+		{
+			"name": "Activity Logs (Vacancy Only)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://127.0.0.1:8000/api/admin/logs"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Vacancy",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://127.0.0.1:8000/api/admin/deleteVacancy/1"
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "9|IaHWGOWytCx3BqpqFpO2pn1FFdwMEwdnejJQ9ajac948be4c"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

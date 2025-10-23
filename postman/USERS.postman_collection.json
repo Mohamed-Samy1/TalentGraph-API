@@ -1,0 +1,40 @@
+{
+	"info": {
+		"_postman_id": "bad78321-f9a7-4ab1-a34b-28485a523ddf",
+		"name": "USERS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20110358"
+	},
+	"item": [
+		{
+			"name": "POST User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "8|MfnKgEJoHfNqSE1h6twnAaqPORx3tN1gAsPBqrpPc087eabf"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8000/api/users"
+			},
+			"response": []
+		}
+	]
+}
