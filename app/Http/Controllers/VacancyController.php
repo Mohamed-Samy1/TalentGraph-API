@@ -33,6 +33,10 @@ class VacancyController extends Controller
                 ->with(['company', 'employer'])
                 ->paginate();
 
+            return $this->ok('Vacancies fetched successfully', [
+                'data' => VacancyResource::collection($vacancies)
+            ], 200);
+
         } catch (\Throwable $e) {
             return $this->error('Failed to fetch vacancies', 500);
         }   
