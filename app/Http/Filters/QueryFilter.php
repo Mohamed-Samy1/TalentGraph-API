@@ -26,7 +26,7 @@ abstract class QueryFilter
             }
         }
 
-        // Always apply default sorting if sort() method exists
+        // Always apply default sorting if sort method exists
         if (method_exists($this, 'sort')) {
             $sortValue = $this->request->get('sort');
             $this->sort($sortValue);
